@@ -24,6 +24,8 @@ export default function Make() {
 
     }
 
+    
+
     const onCLickSubmitBtn = async () => {
         const formData = new FormData()
 
@@ -70,39 +72,34 @@ export default function Make() {
         console.log(nodeCount);
         
     }
+    // const rendering = () => {
+    //     const result = [];
+    //     for (let i = 0; i < nodeCount; i++) {
+    //         result.push()
+    //     }
+    //     return result;
+    // }
 
-    const rendering = () => {
-        const result = [];
-        for (let i = 0; i < nodeCount; i++) {
-            result.push(<ul className="info_list info_list_add">
-                <li className="list_item">
-                    <label className="item_tit" htmlFor="name">{nodeCount}. </label>
-                    <input type="text" name="menu" placeholder="메뉴이름" id="name" required />
-                </li>
-                <li className="list_item">
-                    <input type="text" name="price" placeholder="예상금액 (1인당 / 금액만 입력)" id="price" required />
-                </li>
-                <li className="list_item">
-                    <input type="text" name="url" placeholder="URL" id="adressurl" required />
-                </li>
+    const [selected, setSelected] = useState(0);
+    const [minSelected, setMinSelected] = useState(0);
 
-                <div className='list_pic'>
-                    <ProductImage
-                        productImg={productImg}
-                        setproductImg={setproductImg}
-                    />
-
-                </div>
-            </ul>)
-        }
-        return result;
+    const handleSelect = (e) => {
+        setSelected(e.target.value)
     }
+
+    const minHandleSelect = (e) => {
+        setMinSelected(e.target.value)
+    }
+
+    console.log(selected);
+    console.log(minSelected);
+    
 
     // 마감시간 for 문
     const timeSelect = () => {
         const result = [];
         for (let i = 0; i < 25; i++) {
-            result.push(<option value={i}>{i}</option>)
+            result.push(<option value={i} key={i}>{i}</option>)
         }
         return result;
     }
@@ -110,10 +107,13 @@ export default function Make() {
     const minuteSelect = () => {
         const result = [];
         for (let i = 0; i < 7; i++) {
-            result.push(<option value={{i}+0}>{i}0</option>)
+            result.push(<option value={i + '0'} key={i + '0'}>{i + '0'}</option>)
         }
         return result;
     }
+    
+
+
 
     const [selectedOption, setselectedOption] = useState('');
     const [userName, setUserName] = useState('');
@@ -207,7 +207,30 @@ export default function Make() {
                         </div>
                         <div className="info_area">
                             <p className="info_title">메뉴등록</p>
-                            {rendering()}
+                            {[...Array(parseInt(nodeCount))].map((n, index) => {
+                                return (
+                                    <ul className="info_list info_list_add">
+                                        <li className="list_item">
+                                            <label className="item_tit" htmlFor="name">{index+1}. </label>
+                                            <input type="text" name="menu" placeholder="메뉴이름" id="name" required />
+                                        </li>
+                                        <li className="list_item">
+                                            <input type="text" name="price" placeholder="예상금액 (1인당 / 금액만 입력)" id="price" required />
+                                        </li>
+                                        <li className="list_item">
+                                            <input type="text" name="url" placeholder="URL" id="adressurl" required />
+                                        </li>
+                        
+                                        <div className='list_pic'>
+                                            <ProductImage
+                                                productImg={productImg}
+                                                setproductImg={setproductImg}
+                                            />
+                        
+                                        </div>
+                                    </ul>
+                                )
+                            })}
                             <button type="button" className="add_btn" onClick={nodeAdd}><img src="../../../image/make/list_add_ico.png" alt="플러스 아이콘" width={26} height={26}/></button>
                         </div>
                         <div className="info_area" style={{display: "none"}}>
@@ -216,24 +239,25 @@ export default function Make() {
                         <div className="info_area" style={{display: "none"}}>
                             <input type="text" name="username" value={userName} required />
                         </div>
-                        <div className="info_area" style={{display: "none"}}>
+                        {/* <div className="info_area" style={{display: "none"}}>
                             <input type="text" name="prdImages" value={['']} required />
-                        </div>
+                        </div> */}
                         <div className="info_area">
                             <p className="info_title">마감시간</p>
                             <ul className="info_list">
                                 <li className="list_item" style={{border: "none"}}>
                                     <div className="select_wrap">
-                                        <select>
+                                        <select onChange={handleSelect} value={parseInt(selected)}>
                                             {timeSelect()}
                                         </select>
                                     </div>
                                     <p className="time_txt">시</p>
                                     <div className="select_wrap">
-                                        <select>
+                                        <select onChange={minHandleSelect} value={parseInt(minSelected)}>
                                            {minuteSelect()}
                                         </select>
                                     </div>
+                                    <input type="hidden" name="date" value={selected+minSelected}></input>
                                     <p className="time_txt">분</p>
                                 </li>
                             </ul>

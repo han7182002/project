@@ -16,6 +16,8 @@ export default function ListPage({ data }) {
     const [image, setImage] = useState(defaultImageUrl);
     const [userInfo, setUserInfo] = useState(null);
 
+    
+    
     console.log("Received data:", data);
 
     useEffect(() => {
