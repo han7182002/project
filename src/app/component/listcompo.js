@@ -10,24 +10,30 @@ import Make from '../component/make';
 export default function ListPage({ data }) {
     const Router = useRouter();
 
-    const defaultImageUrl = '/image/intro/profile-common.png'; //기본 이미지 경로
+    const defaultImageUrl = '/image/intro/profile-common.png';
 
     // 프로필 이미지 업로드
     const [image, setImage] = useState(defaultImageUrl);
+    const [userInfo, setUserInfo] = useState(null);
 
     console.log("Received data:", data);
 
     useEffect(() => {
-        if (!localStorage.getItem('users')) {
-            Router.push('/intro')
+        const storedUserInfo = localStorage.getItem('users');
+        if (!storedUserInfo) {
+            Router.push('/intro');
+        } else {
+            const parsedUserInfo = JSON.parse(storedUserInfo);
+            setUserInfo(parsedUserInfo);
+            setImage(parsedUserInfo.image && defaultImageUrl);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [Router]);
 
     const [dummyData] = useState(data);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('전체');
+    const [selectedCategory, setSelectedCategory] = useState('2'); // 기본값 '점심'
 
     const parseTime = (timeString) => {
         const hours = parseInt(timeString.substring(0, 2));
@@ -41,6 +47,7 @@ export default function ListPage({ data }) {
     };
 
     const filteredData = dummyData
+        .filter(item => item.category === selectedCategory)
         .filter(item =>
             item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (item.hash && item.hash.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -71,7 +78,18 @@ export default function ListPage({ data }) {
     return (
         <div className="wrap list flex flex-col min-h-screen">
             <div className="Header-list w-full flex flex-col items-center ">
-                <div className="Header-list__menu">점심</div>
+                <div className="Header-list__select">
+                    <select
+                        className="Header-list__menu"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value="1">아침</option>
+                        <option value="2">점심</option>
+                        <option value="3">저녁·회식</option>
+                        <option value="4">음료·디저트</option>
+                    </select>
+                </div>
                 <div className="Header-list__search flex relative">
                     <input
                         className='Header-list__input'
@@ -115,7 +133,7 @@ export default function ListPage({ data }) {
                                     <div className="img-box">
                                         <img src={image} alt="프로필 이미지" width={56} height={56} className="profile-image" />
                                     </div>
-                                    <span className='profile-name'>{item.username}</span>
+                                    <span className='profile-name'>{userInfo?.loginName || item.username}</span>
                                 </div>
                                 <div className="mem-item__content">
                                     <div className="mem-item__wrap relative">

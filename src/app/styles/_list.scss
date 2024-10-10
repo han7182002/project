@@ -12,14 +12,25 @@
         margin-bottom: 20px;
         padding-bottom: 20px;
 
+        &__select {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
         &__menu {
-            padding: 18px 0 11px 0;
+
             font-size: 18px;
             color: var(--white);
+            background: none;
+            position: relative;
+            min-width: 120px;
+            max-width: 80%;
 
             &::after {
                 content: '';
-                display: inline-flex;
+                display: flex;
                 width: 18px;
                 height: 9px;
                 margin-left: 10px;

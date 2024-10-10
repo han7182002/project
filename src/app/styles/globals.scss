@@ -200,15 +200,15 @@ body {
 }
 
 .btn-box {
-    width: 100%;
-    min-width: 320px;
-    margin: 0 auto;
-    max-width: 600px;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 10;
+  width: 100%;
+  min-width: 320px;
+  margin: 0 auto;
+  max-width: 600px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
 
   // 홈버튼
   &__link {
@@ -222,15 +222,10 @@ body {
     background-size: 24px;
     background-color: var(--white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
 
     font-size: 0;
     color: transparent;
 
-    &:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
   }
 
   //모달버튼
