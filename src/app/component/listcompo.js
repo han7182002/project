@@ -1,14 +1,15 @@
 'use client';
 
-import Link from "next/link.js";
+import Link from "next/link";
 import { useEffect, useState } from 'react';
 import Modal from '../component/Modal';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import HomeButton from '../component/HomeBtn';
 import Make from '../component/make';
 
 export default function ListPage({ data }) {
     const Router = useRouter();
+    const pathname = usePathname();
 
     const defaultImageUrl = '/image/intro/profile-common.png';
 
@@ -36,6 +37,13 @@ export default function ListPage({ data }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('전체');
     const [selectedCategory, setSelectedCategory] = useState('2'); // 기본값 '점심'
+
+    useEffect(() => {
+        const category = pathname.split('/').pop();
+        if (['1', '2', '3', '4'].includes(category)) {
+            setSelectedCategory(category);
+        }
+    }, [pathname]);
 
     const parseTime = (timeString) => {
         const hours = parseInt(timeString.substring(0, 2));
@@ -77,6 +85,11 @@ export default function ListPage({ data }) {
         return `${hours}:${minutes}`;
     };
 
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        Router.push(`/list/${category}`);
+    };
+
     return (
         <div className="wrap list flex flex-col min-h-screen">
             <div className="Header-list w-full flex flex-col items-center ">
@@ -84,7 +97,7 @@ export default function ListPage({ data }) {
                     <select
                         className="Header-list__menu"
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        onChange={(e) => handleCategoryChange(e.target.value)}
                     >
                         <option value="1">아침</option>
                         <option value="2">점심</option>

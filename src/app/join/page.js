@@ -5,31 +5,25 @@ import parse from 'html-react-parser';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-
 export default function JoinServer() {
     const Router = useRouter();
 
-    // 로컬스토리지에있는 프로필명 불러오기
     const [userName, setUserName] = useState('');
 
     useEffect(() => {
         if (localStorage.getItem('users')) {
             const name = JSON.parse(localStorage.getItem('users'))
             setUserName(name.loginName)
-
         } else {
             Router.push('/intro')
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
+    }, [Router]);
 
     const mealCategories = [
-        { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트' },
-        { title: '점심', image: '/image/join/meal-item03-rice.png', alt: '밥' },
-        { title: '저녁, 회식', image: '/image/join/meal-item04-beer.png', alt: '맥주' },
-        { title: '커피, 음료,<br>디저트', image: '/image/join/meal-item01-greencoffee.png', alt: '커피' },
+        { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트', value: '1' },
+        { title: '점심', image: '/image/join/meal-item03-rice.png', alt: '밥', value: '2' },
+        { title: '저녁, 회식', image: '/image/join/meal-item04-beer.png', alt: '맥주', value: '3' },
+        { title: '커피, 음료,<br>디저트', image: '/image/join/meal-item01-greencoffee.png', alt: '커피', value: '4' },
     ];
 
     return (
@@ -41,16 +35,16 @@ export default function JoinServer() {
                 </h2>
 
                 <ul className="meal-list grid grid-cols-2 gap-4">
-                    {mealCategories.map(({ title, image, alt }, index) => (
+                    {mealCategories.map(({ title, image, alt, value }) => (
                         <li
                             key={title}
-                            className={`meal-item relative rounded-lg font-semibold 
-                                after:absolute after:top-0 after:left-0 after:w-full after:h-full 
-                                after:bg-gradient-to-tr after:from-[#e2e2e2] after:to-[#666666] 
-                                after:opacity-20 after:rounded-[10px] 
-                                ${index === 2 ? 'meal-item--color' : ''}`}
+                            className={`meal-item relative rounded-lg font-semibold
+                                after:absolute after:top-0 after:left-0 after:w-full after:h-full
+                                after:bg-gradient-to-tr after:from-[#e2e2e2] after:to-[#666666]
+                                after:opacity-20 after:rounded-[10px]
+                                ${value === '3' ? 'meal-item--color' : ''}`}
                         >
-                            <Link href={"/list/" + index} className="meal-item__link relative block z-10">
+                            <Link href={`/list/${value}`} className="meal-item__link relative block z-10">
                                 <h3 className="meal-item__title text-black">{parse(title)}</h3>
                                 <div className="img-box absolute w-20 bottom-[-17px] right-0">
                                     <img src={image} alt={alt} />
@@ -61,7 +55,7 @@ export default function JoinServer() {
                 </ul>
 
                 <textarea
-                    className="meal__banner w-full p-5 rounded-xl text-black font-semibold 
+                    className="meal__banner w-full p-5 rounded-xl text-black font-semibold
                         text-lg opacity-20 bg-gradient-to-tr from-[#e2e2e2] to-[#666666]"
                     defaultValue="광고배너"
                     readOnly
