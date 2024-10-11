@@ -2,6 +2,8 @@
     width: 100%;
     padding: 85px 20px 0 20px;
 
+    .login_img {display: none;}
+
     &__title {
         font-size: 30px;
 
@@ -22,15 +24,35 @@
         .meal-item {
             width: 100%;
             height: 115px;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1),
+            inset -3px -3px 7px rgba(0, 0, 0, 0.1),
+            inset 3px 3px 7px rgba(0, 0, 0, 0);
+
+            &:hover {
+                box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1),
+                inset -3px -3px 10px rgba(255, 255, 255, 0.2),
+                inset 3px 3px 7px rgba(0, 0, 0, 0.15);
+            }
 
             &.meal-item--color {
                 z-index: 0;
+                
 
                 &::after {
                     background: linear-gradient(135deg, #abffe6 0%, #42f3be 100%);
                     opacity: 1;
                     z-index: -1;
+                    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1),
+                    inset -3px -3px 7px rgba(0, 0, 0, 0.1),
+                    inset 3px 3px 7px rgba(0, 0, 0, 0);
                 }
+
+                &:hover::after {
+                    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1),
+                    inset -3px -3px 10px rgba(255, 255, 255, 0.2),
+                    inset 3px 3px 7px rgba(0, 0, 0, 0.15);
+                }
+
             }
 
             &__link {

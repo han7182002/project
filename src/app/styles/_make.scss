@@ -34,41 +34,42 @@
 
             // 이미지 저장하기
             .list_pic {
-                position: relative; width: fit-content;
-                .img_wrap {
-                    display: flex;
-                }
-                .list_img {
-                    position: relative; width: 73px; height: 73px; margin-right: 20px; border-radius: 5px;
-                }
-                .img_input {
-                    display: none;
-                }
-                .img_label {
+                position: relative; width: fit-content; display: flex; flex-direction: row-reverse; margin-bottom: 20px;
+                
+            }
+            .img_wrap {
+                display: flex; flex-wrap: wrap; gap: 10px; margin-right: 10px;
+            }
+            .list_img {
+                position: relative; width: 53px; height: 53px; border-radius: 5px;
+            }
+            .img_input {
+                display: none;
+            }
+            .img_label {
+                display: block;
+                width: 53px;
+                height: 53px;
+                background: url('/image/make/upload_ico.png') no-repeat center/cover;
+                cursor: pointer;
+            }
+            .img_delete {
+                display: none;
+                position: absolute;
+                right: -6px;
+                top: -6px;
+                width: 20px;
+                height: 20px;
+                background: url('/image/make/upload_delete.png') no-repeat center/cover;
+                cursor: pointer;
+                &.show {
                     display: block;
-                    width: 73px;
-                    height: 73px;
-                    background: url('/image/make/upload_ico.png') no-repeat center/cover;
-                    cursor: pointer;
                 }
-                .img_delete {
-                    display: none;
-                    position: absolute;
-                    right: -6px;
-                    top: -6px;
-                    width: 20px;
-                    height: 20px;
-                    background: url('/image/make/upload_delete.png') no-repeat center/cover;
-                    cursor: pointer;
-                    &.show {
-                        display: block;
-                    }
-                    .blind {display: none;}
-                }
+                .blind {display: none;}
             }
         }
         .info_list_add {margin-bottom: 20px;}
-        .add_btn {position: absolute; bottom: 235px; right: 0px;}
+        .add_btn {position: absolute; top: 62px; right: 0px;}
     }
     .btn_submit {display: flex; align-items: center; justify-content: center; width: 100%; height: 60px; background-color: #4DF5C3; color: #fff; font-size: 20px; font-weight: 700; border-radius: 10px;}
     .close_btn {position: absolute; top: 20px; right: 20px; width: 41px; height: 40px;}
