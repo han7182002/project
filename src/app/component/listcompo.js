@@ -17,8 +17,6 @@ export default function ListPage({ data }) {
     const [image, setImage] = useState(defaultImageUrl);
     const [userInfo, setUserInfo] = useState(null);
 
-    
-    
     console.log("Received data:", data);
 
     useEffect(() => {
@@ -28,7 +26,9 @@ export default function ListPage({ data }) {
         } else {
             const parsedUserInfo = JSON.parse(storedUserInfo);
             setUserInfo(parsedUserInfo);
-            setImage(parsedUserInfo.image && defaultImageUrl);
+            setImage(parsedUserInfo.image && parsedUserInfo.image[0] && typeof parsedUserInfo.image[0] === 'string'
+                ? parsedUserInfo.image[0]
+                : defaultImageUrl);
         }
     }, [Router]);
 
@@ -38,6 +38,7 @@ export default function ListPage({ data }) {
     const [selectedFilter, setSelectedFilter] = useState('전체');
     const [selectedCategory, setSelectedCategory] = useState('2'); // 기본값 '점심'
 
+    // URL 변경 감지 및 카테고리 동기화
     useEffect(() => {
         const category = pathname.split('/').pop();
         if (['1', '2', '3', '4'].includes(category)) {
@@ -45,15 +46,36 @@ export default function ListPage({ data }) {
         }
     }, [pathname]);
 
-    const parseTime = (timeString) => {
+    const parseTime = (dateString, timeString) => {
+        if (!dateString || !timeString) {
+            return new Date();
+        }
+
+        const [year, month, day] = dateString.split('-').map(Number);
         const hours = parseInt(timeString.substring(0, 2));
         const minutes = parseInt(timeString.substring(2));
-        return new Date(2024, 0, 1, hours, minutes);
+
+        if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes)) {
+            return new Date();
+        }
+
+        return new Date(year, month - 1, day, hours, minutes);
     };
 
     const getCurrentTime = () => {
-        const now = new Date();
-        return new Date(2024, 0, 1, now.getHours(), now.getMinutes());
+        return new Date();
+    };
+
+    const isExpired = (dateString, timeString) => {
+        const itemDateTime = parseTime(dateString, timeString);
+        const now = getCurrentTime();
+        return now > itemDateTime;
+    };
+
+    const formatTime = (timeString) => {
+        const hours = timeString.substring(0, 2);
+        const minutes = timeString.substring(2);
+        return `${hours}:${minutes}`;
     };
 
     const filteredData = dummyData
@@ -64,26 +86,13 @@ export default function ListPage({ data }) {
         )
         .filter(item => {
             if (selectedFilter === '전체') return true;
-            const itemTime = parseTime(item.date);
-            const now = getCurrentTime();
-            if (selectedFilter === '진행중') return itemTime > now;
-            if (selectedFilter === '종료') return itemTime <= now;
+            const expired = isExpired(item.createdAt, item.date);
+            if (selectedFilter === '진행중') return !expired;
+            if (selectedFilter === '종료') return expired;
             return true;
         });
 
     console.log("Filtered data:", filteredData);
-
-    const isExpired = (timeString) => {
-        const itemTime = parseTime(timeString);
-        const now = getCurrentTime();
-        return now > itemTime;
-    };
-
-    const formatTime = (timeString) => {
-        const hours = timeString.substring(0, 2);
-        const minutes = timeString.substring(2);
-        return `${hours}:${minutes}`;
-    };
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
@@ -142,7 +151,7 @@ export default function ListPage({ data }) {
 
                 <ul className="mem-list flex flex-col gap-2">
                     {filteredData.map((item) => (
-                        <li key={item._id} className={`mem-item relative flex items-center ${isExpired(item.date) ? 'disabled' : ''}`}>
+                        <li key={item._id} className={`mem-item relative flex items-center ${isExpired(item.createdAt, item.date) ? 'disabled' : ''}`}>
                             <Link href={"/detail/" + item._id} style={{ width: "100%" }}>
                                 <div className="mem-item__profile flex flex-col items-center">
                                     <div className="img-box">
@@ -159,7 +168,7 @@ export default function ListPage({ data }) {
                                         <div className="mem-item__box flex justify-between">
                                             {item.price && <p className="mem-item__price text-black">예상금액 : 1인당 {item.price[0]}원</p>}
                                             <p className="mem-item__time text-black">
-                                                {isExpired(item.date) ? (
+                                                {isExpired(item.createdAt, item.date) ? (
                                                     <span className="expired-label text-black">종료</span>
                                                 ) : (
                                                     <>마감 <span>{formatTime(item.date)}</span>까지</>
