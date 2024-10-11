@@ -3,58 +3,38 @@
 import 'animate.css';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 
 export default function Intro() {
 
     const router = useRouter();
 
-    useEffect(() => {
-        if (localStorage.getItem('users')) {
-            router.push('/join')
-        }
-    });
-
-
-    //login시 localstorage에 저장
-    const { register, getValues } = useForm();
-
-    const onLoginBtnClick = () => {
-        const user = getValues();
-        if (localStorage.getItem('users')) { //이미 user 정보가 있을 때ß
-            // const users = JSON.parse(localStorage.getItem('users') || '[]');
-            // const allUsers = [...users, user]
-            // localStorage.setItem('users', JSON.stringify(allUsers));
-
-            // router.push('/join')
-        } else { //user 정보가 없을 때
-            localStorage.setItem('users', JSON.stringify(user));
-            router.push('/join')
-
-            setTimeout(() => {
-                localStorage.clear('users')
-            }, 3000000)
-            // 1시간 뒤에 스토리지 삭제
-        }
-
-
-        console.log('user info', user);
-
-    }
-
     const defaultImageUrl = '/image/intro/profile-common.png'; //기본 이미지 경로
-
-    // 프로필 이미지 업로드
-    const [image, setImage] = useState(defaultImageUrl);
+    const [nickname, setNickname] = useState('');
+    const [profileImg, setProfileImg] = useState(defaultImageUrl);
     const [file, setFile] = useState(null);
+    
 
-    // 이미지 파일을 선택했을 때 호출되는 함수
-    const handleImageChange = (event) => {
-        const selectedFile = event.target.files[0];
+    useEffect(() => {
+        
+        const savedNickname = localStorage.getItem('nickname');
+        const savedProfileImg = localStorage.getItem('profileImg');
+        if (savedNickname && savedProfileImg) {
+            router.push('/join')
+        }
+    
+    });
+    
+    const handleNicknameChange = (e) => {
+        setNickname(e.target.value);
+    };
+
+    //이미지 파일을 선택했을 때 호출되는 함수
+    const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0];
         if (selectedFile) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result);
+                setProfileImg(reader.result);
                 setFile(selectedFile);
             };
             reader.readAsDataURL(selectedFile);
@@ -63,9 +43,31 @@ export default function Intro() {
 
     // 취소 버튼을 클릭했을 때 호출되는 함수
     const handleCancel = () => {
-        setImage(defaultImageUrl);
+        setProfileImg(defaultImageUrl);
         setFile(null);
     };
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
+            //router.push('/join')
+        } else {
+            localStorage.setItem('nickname',  JSON.stringify(nickname) );
+            localStorage.setItem('profileImg',  JSON.stringify(profileImg));
+            router.push('/join');
+
+            setTimeout(()=> {
+                localStorage.clear('nickname')
+                localStorage.clear('profileImg')
+            }, 3000000)
+        }
+
+      };
+
+
+
 
     // cover 나타났다가 사라지게 하는 함수
     const [visible, setVisible] = useState(true);
@@ -104,37 +106,39 @@ export default function Intro() {
 
             <div className='login'>
                 <h2 className='login_title'>프로필 사진과<br />닉네임을 등록해주세요.</h2>
-                <div className='login_profile' onChange={handleImageChange}>
-                    <div className='login_img_wrap' >
-                        <img className='login_img' src={image} alt="프로필 이미지" width={148} height={148} />
+                <form onSubmit={handleSubmit}>
+                    <div className='login_profile' onChange={handleImageChange}>
+                        <div className='login_img_wrap' >
+                            <img className='login_img' src={profileImg} alt="프로필 이미지" width={148} height={148} />
+                        </div>
+                        <input
+                            id='loginImgInput'
+                            className='login_img_input'
+                            type='file'
+                            
+                        />
+                        <label htmlFor='loginImgInput' className='login_img_label'></label>
+                        <button className={`login_img_delete ${!file ? '' : 'show'}`} type="button" onClick={handleCancel} title="기본 이미지로 변경"></button>
                     </div>
-                    <input
-                        id='loginImgInput'
-                        className='login_img_input'
-                        type='file'
-                        accept='image/*'
-                        {...register('image')}
-                    />
-                    <label htmlFor='loginImgInput' className='login_img_label'></label>
-                    <button className={`login_img_delete ${!file ? '' : 'show'}`} type="button" onClick={handleCancel} title="기본 이미지로 변경"></button>
-                </div>
-                <div className='login_name'>
-                    <input
-                        id='loginName'
-                        className='login_name_input'
-                        type='text'
-                        placeholder='닉네임을 입력해주세요.'
-                        {...register('loginName')}
-                        required
-                    />
-                    <p className='login_name_check'>사용 가능한 닉네임 입니다.</p>
-                </div>
-                <button
-                    className='login_btn'
-                    type='button'
-                    onClick={() => onLoginBtnClick()}>
-                    입장하기
-                </button>
+                    <div className='login_name'>
+                        <input
+                            id='loginName'
+                            className='login_name_input'
+                            type='text'
+                            value={nickname}
+                            onChange={handleNicknameChange}
+                            placeholder='닉네임을 입력해주세요.'
+                            required
+                        />
+                        <p className='login_name_check'>사용 가능한 닉네임 입니다.</p>
+                    </div>
+                    <button
+                        className='login_btn'
+                        type='submit'
+                        >
+                        입장하기
+                    </button>
+                </form>
             </div>
         </div>
     );

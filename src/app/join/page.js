@@ -8,12 +8,20 @@ import { useRouter } from 'next/navigation';
 export default function JoinServer() {
     const Router = useRouter();
 
+    // 로컬스토리지에있는 프로필명 불러오기
+    const defaultImageUrl = '/image/intro/profile-common.png'; //기본 이미지 경로
+
     const [userName, setUserName] = useState('');
+    const [userprofileImg, setUserprofileImg] = useState(defaultImageUrl);
 
     useEffect(() => {
-        if (localStorage.getItem('users')) {
-            const name = JSON.parse(localStorage.getItem('users'))
-            setUserName(name.loginName)
+        if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
+            const nickname = JSON.parse(localStorage.getItem('nickname'));
+            const profileImg = JSON.parse(localStorage.getItem('profileImg'));
+            
+            setUserName(nickname)
+            setUserprofileImg(profileImg)
+
         } else {
             Router.push('/intro')
         }
@@ -33,6 +41,7 @@ export default function JoinServer() {
                     오늘도 존버 <span className="userName">{userName}</span>님<br />
                     건강한 <span className="relative companyUser after:absolute after:bottom-0 after:left-0 after:w-full after:h-[10px] after:bg-[#4DF5C3] after:z-[-1]">회사세끼</span> 되세요.
                 </h2>
+                <img className='login_img' src={userprofileImg} alt="프로필 이미지" width={148} height={148} />
 
                 <ul className="meal-list grid grid-cols-2 gap-4">
                     {mealCategories.map(({ title, image, alt, value }) => (
