@@ -7,7 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import HomeButton from '../component/HomeBtn';
 import Make from '../component/make';
 
-export default function ListPage({ data }) {
+export default function ListPage({ data, props }) {
     const Router = useRouter();
     const pathname = usePathname();
 
@@ -19,12 +19,19 @@ export default function ListPage({ data }) {
 
     console.log("Received data:", data);
 
+    let users = data.map((username, index) => data[index].username);
+    console.log('users', users);
+
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('users');
+        // const storedUserInfo = localStorage.getItem('users');
+        const storedUserInfo = users;
+        
         if (!storedUserInfo) {
             Router.push('/intro');
         } else {
-            const parsedUserInfo = JSON.parse(storedUserInfo);
+            // const parsedUserInfo = JSON.parse(storedUserInfo);
+            const parsedUserInfo = users;
+
             setUserInfo(parsedUserInfo);
             setImage(parsedUserInfo.image && parsedUserInfo.image[0] && typeof parsedUserInfo.image[0] === 'string'
                 ? parsedUserInfo.image[0]

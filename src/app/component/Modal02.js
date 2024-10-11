@@ -8,8 +8,8 @@ export default function Modal02(props) {
 
   const [dummyData] = useState(props.data);
   const menuListData = dummyData;
-  const prdImgArr = props.data.prdImages;
-  console.log('prdImgArr', prdImgArr);
+  // const prdImgArr = props.data.prdImages;
+  // console.log('prdImgArr', prdImgArr);
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,7 +30,7 @@ export default function Modal02(props) {
     <>
       {/* <button className='icon_person ' onClick={handleOpen}>버튼</button> */}
       {
-        menuListData.length !== 0 ? (
+        menuListData !== undefined ? (
           menuListData.map((image, index) =>
                 <li key={index} className="btn_photo">
                     <img key={index} onClick={handleOpen} src={image} alt="alt" />

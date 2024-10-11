@@ -43,7 +43,7 @@ export default function Detail(props) {
     let prices = props.data.price.map(prices => prices);
     const prdImgArr = props.data.prdImages;
     const links = props.data.url;
-    console.log('prdImgArr', prdImgArr);
+    // console.log('prdImgArr', prdImgArr.length );
 
     return (
         <div className="wrap">
@@ -115,7 +115,7 @@ export default function Detail(props) {
                                             </ul>
 
                                             {
-                                                prdImgArr.length !== 0 ? (
+                                                ( Object.keys(props.data).hasOwnProperty('prdImages') ) ? (
                                                     <a href={links[index]} target="_blank" className="btn_link active" title="해당 페이지로 이동">
                                                         <span className="blind">공유하기</span>
                                                     </a>
