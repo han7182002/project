@@ -61,7 +61,7 @@ export default function Intro() {
             setTimeout(()=> {
                 localStorage.clear('nickname')
                 localStorage.clear('profileImg')
-            }, 3000000)
+            }, 720000)
         }
 
       };
