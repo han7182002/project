@@ -3,6 +3,7 @@
 import { Input } from "postcss";
 import Image from "next/image";
 import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
 
 export default function Make() {
 
@@ -55,13 +56,16 @@ export default function Make() {
     const [selectedOption, setselectedOption] = useState('');
     const [userName, setUserName] = useState('');
 
+    
+    const router = useRouter();
+
     useEffect(() => {
-        if (localStorage.getItem('users')) {
-            const name = JSON.parse(localStorage.getItem('users'))
+        if (localStorage.getItem('nickname')) {
+            const name = JSON.parse(localStorage.getItem('nickname'))
             setUserName(name.loginName)
         
         } else {
-            Router.push('/intro')
+            router.push('/intro')
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,14 +165,14 @@ export default function Make() {
                                         <div className='list_pic'>
                                             <label className="img_label" htmlFor="imageUp"></label>
                                             <input type="file" id="imageUp" className="img_input" multiple accept="image/*" onChange={async (e) => {
-                                                if (!e.target.files) {
+                                                let files = e.target.files;
+                                                if (!files) {
                                                     setImgUrl([]);
                                                     setFileNames([]);
                                                     return;
                                                 }
-                                                let files = e.target.files;
 
-                                                if (e.target.files && !e.target.files.size > 5000000) {
+                                                if (files && !files.size > 5000000) {
                                                     toast.error('파일 용량이 너무 큽니다.')
                                                     return null;
                                                 }
@@ -192,7 +196,7 @@ export default function Make() {
                                                 // 서버전송
                                                 await fetch(`/api/post/imgUpload`, {
                                                     method: 'POST',
-                                                    body: formData
+                                                    body: formData,
                                                 })
                                                 .then(res=> {
                                                     return res.json();

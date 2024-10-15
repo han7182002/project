@@ -12,7 +12,7 @@ export default function Detail(props) {
     const Router = useRouter();
 
     useEffect(() => {
-        if (!localStorage.getItem('users')) {
+        if (!localStorage.getItem('nickname')) {
             Router.push('/intro')
         }
     });
