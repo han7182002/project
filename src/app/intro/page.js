@@ -13,22 +13,23 @@ export default function Intro() {
     const [profileImg, setProfileImg] = useState(defaultImageUrl);
     const [file, setFile] = useState(null);
     
-
+    // 페이지 들어왔을 때 저장된 닉네임, 이미지 있을 시 join으로 이동 함수
     useEffect(() => {
-        
         const savedNickname = localStorage.getItem('nickname');
         const savedProfileImg = localStorage.getItem('profileImg');
+
         if (savedNickname && savedProfileImg) {
             router.push('/join')
         }
     
     });
     
+    // 닉네임 입력 시 값을 불러오는 함수
     const handleNicknameChange = (e) => {
         setNickname(e.target.value);
     };
 
-    //이미지 파일을 선택했을 때 호출되는 함수
+    // 프로필 이미지 파일을 선택했을 때 파일 주소 변환되는 함수
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
@@ -41,18 +42,21 @@ export default function Intro() {
         }
     };
 
-    // 취소 버튼을 클릭했을 때 호출되는 함수
+    // 프로필 이미지 취소 버튼을 클릭했을 때 기본이미지로 변경되는 함수
     const handleCancel = () => {
         setProfileImg(defaultImageUrl);
         setFile(null);
     };
 
 
+    // 입장하기 클릭 시 호출되는 함수
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // 로컬스토리지에 닉네임,이미지가 있을 때
         if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
-            //router.push('/join')
+
+        // 없을 때
         } else {
             localStorage.setItem('nickname',  JSON.stringify(nickname) );
             localStorage.setItem('profileImg',  JSON.stringify(profileImg));
@@ -63,10 +67,7 @@ export default function Intro() {
                 localStorage.clear('profileImg')
             }, 720000)
         }
-
       };
-
-
 
 
     // cover 나타났다가 사라지게 하는 함수
@@ -79,9 +80,6 @@ export default function Intro() {
 
         return () => clearTimeout(timer);
     }, []);
-
-
-
 
     return (
         <div className='intro wrap'>
@@ -101,7 +99,7 @@ export default function Intro() {
                         <img className='cover_img cover_img04 animate__animated animate__zoomIn' src='./image/intro/intro-text04.png' alt='끼' width={36} height={54} />
                         <img className='cover_img cover_img04-1 animate__animated animate__fadeInDownBig' src='./image/intro/intro-tie.png' alt='넥타이' width={28} height={70} />
                     </div>
-                </div>
+                </div>g
             </div>
 
             <div className='login'>
@@ -115,7 +113,6 @@ export default function Intro() {
                             id='loginImgInput'
                             className='login_img_input'
                             type='file'
-                            
                         />
                         <label htmlFor='loginImgInput' className='login_img_label'></label>
                         <button className={`login_img_delete ${!file ? '' : 'show'}`} type="button" onClick={handleCancel} title="기본 이미지로 변경"></button>
@@ -130,7 +127,6 @@ export default function Intro() {
                             placeholder='닉네임을 입력해주세요.'
                             required
                         />
-                        <p className='login_name_check'>사용 가능한 닉네임 입니다.</p>
                     </div>
                     <button
                         className='login_btn'

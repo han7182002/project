@@ -77,7 +77,6 @@ export default function JoinServer() {
                     defaultValue="광고배너"
                     readOnly
                 />
-
                 <Link href='/' className='meal__logout' onClick={handleLogout}>로그아웃</Link>
             </main>
         </div>
