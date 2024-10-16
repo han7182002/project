@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Modal02 from '../component/Modal02.js';
-import { useRouter } from "next/navigation.js";
+import { useRouter, usePathname } from "next/navigation.js";
 import HomeButton from '../component/HomeBtn';
 import axios from "axios";
 
@@ -19,9 +19,8 @@ export default function Detail(props) {
         }
     });
 
+    // 좋아요 기능 테스트
     let [likes, setLike] = useState(0);
-    
-
     const [isActive, setIsActive] = useState(true);
     const toggleIsActive = (i, prev) => {
         setIsActive(i);
@@ -44,6 +43,7 @@ export default function Detail(props) {
 
     console.log('props', props.data);
 
+    // 데이터 불러오기
     const [dummyData] = useState(props.data);
     const menuListData = dummyData;
     const _id = props.data._id;
@@ -56,15 +56,28 @@ export default function Detail(props) {
     const prdImgArr = props.data.prdImages;
     let checks = props.data.check;
     const links = props.data.url;
-    // console.log('names', names);
-    
-    // console.log('prdImgArr', prdImgArr.length );
+
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert('클립보드에 복사되었습니다.');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleCopyClick = () => {
+        const textToCopy = window.location.href; // 복사하고 싶은 텍스트
+        copyToClipboard(textToCopy);
+        console.log('textToCopy', textToCopy);
+        
+    };
 
     return (
         <div className="wrap">
             <div className="detail">
                 <div className="header">
-                    <button className="btn_share">
+                    <button type="button" onClick={handleCopyClick} className="btn_share">
                         <span className="blind">공유하기</span>
                     </button>
 
@@ -131,11 +144,11 @@ export default function Detail(props) {
 
                                             {
                                                 prdImgArr.length !== 0 ? (
-                                                    <a href={links[index]} target="_blank" className="btn_link active" title="해당 페이지로 이동">
+                                                    <a href={`https://`+links[index]} target="_blank" className="btn_link active" title="해당 페이지로 이동">
                                                         <span className="blind">공유하기</span>
                                                     </a>
                                                 ) : (
-                                                    <a href={links[index]} className="btn_link disabled">
+                                                    <a href={`https://`+links[index]} className="btn_link disabled">
                                                         <span className="blind">공유하기</span>
                                                     </a>
                                                 )
