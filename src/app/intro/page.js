@@ -99,7 +99,7 @@ export default function Intro() {
                         <img className='cover_img cover_img04 animate__animated animate__zoomIn' src='./image/intro/intro-text04.png' alt='끼' width={36} height={54} />
                         <img className='cover_img cover_img04-1 animate__animated animate__fadeInDownBig' src='./image/intro/intro-tie.png' alt='넥타이' width={28} height={70} />
                     </div>
-                </div>g
+                </div>
             </div>
 
             <div className='login'>
