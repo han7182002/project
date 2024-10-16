@@ -21,7 +21,10 @@ export default function Intro() {
         if (savedNickname && savedProfileImg) {
             router.push('/join')
         }
-    
+        setTimeout(()=> {
+            localStorage.clear('nickname')
+            localStorage.clear('profileImg')
+        }, 720000)
     });
     
     // 닉네임 입력 시 값을 불러오는 함수
@@ -62,10 +65,10 @@ export default function Intro() {
             localStorage.setItem('profileImg',  JSON.stringify(profileImg));
             router.push('/join');
 
-            setTimeout(()=> {
-                localStorage.clear('nickname')
-                localStorage.clear('profileImg')
-            }, 720000)
+            // setTimeout(()=> {
+            //     localStorage.clear('nickname')
+            //     localStorage.clear('profileImg')
+            // }, 720000)
         }
       };
 
