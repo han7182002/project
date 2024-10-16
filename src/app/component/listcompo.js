@@ -19,13 +19,13 @@ export default function ListPage({ data, props }) {
 
     console.log("Received data:", data);
 
-    let users = data.map((username, index) => data[index].username);
+    let users = data.map((index) => data[index].username);
     console.log('users', users);
 
     useEffect(() => {
         // const storedUserInfo = localStorage.getItem('users');
         const storedUserInfo = users;
-        
+
         if (!storedUserInfo) {
             Router.push('/intro');
         } else {

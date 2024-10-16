@@ -32,14 +32,14 @@ export default function Detail(props) {
         // setIsLike(!isLike);
     };
 
-    console.log('props',  props.data);
-    
+    console.log('props', props.data);
+
     const [dummyData] = useState(props.data);
     const menuListData = dummyData;
     const hash = props.data.hash;
     const hashArr = hash.split(',');
     const titles = props.data.title;
-    const numbers = props.data.menu.map((menu, index) => index + 1);
+    const numbers = props.data.menu.map((index) => index + 1);
     let prices = props.data.price.map(prices => prices);
     const prdImgArr = props.data.prdImages;
     const links = props.data.url;
@@ -115,7 +115,7 @@ export default function Detail(props) {
                                             </ul>
 
                                             {
-                                                ( Object.keys(props.data).hasOwnProperty('prdImages') ) ? (
+                                                (Object.keys(props.data).hasOwnProperty('prdImages')) ? (
                                                     <a href={links[index]} target="_blank" className="btn_link active" title="해당 페이지로 이동">
                                                         <span className="blind">공유하기</span>
                                                     </a>
