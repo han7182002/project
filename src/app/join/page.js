@@ -13,12 +13,13 @@ export default function JoinServer() {
 
     const [userName, setUserName] = useState('');
     const [userprofileImg, setUserprofileImg] = useState(defaultImageUrl);
+    const router = useRouter();
 
     useEffect(() => {
         if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
             const nickname = JSON.parse(localStorage.getItem('nickname'));
             const profileImg = JSON.parse(localStorage.getItem('profileImg'));
-            
+
             setUserName(nickname)
             setUserprofileImg(profileImg)
 
@@ -26,6 +27,13 @@ export default function JoinServer() {
             Router.push('/intro')
         }
     }, [Router]);
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('nickname');
+        localStorage.removeItem('profileImg');
+        router.push('/intro');
+    };
 
     const mealCategories = [
         { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트', value: '1' },
@@ -69,6 +77,8 @@ export default function JoinServer() {
                     defaultValue="광고배너"
                     readOnly
                 />
+
+                <Link href='/' className='meal__logout' onClick={handleLogout}>로그아웃</Link>
             </main>
         </div>
     );

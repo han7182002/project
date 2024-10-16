@@ -7,6 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Modal02 from '../component/Modal02.js';
 import { useRouter } from "next/navigation.js";
+import HomeButton from '../component/HomeBtn';
+import axios from "axios";
 
 export default function Detail(props) {
     const Router = useRouter();
@@ -17,32 +19,45 @@ export default function Detail(props) {
         }
     });
 
-    const [like, setLike] = useState(0);
-    // const [isLike, setIsLike] = useState(false);
-
-    // const onLikeButtonClick = () => {
-    //     setLike(like + (isLike ? -1 : 1));
-    //     setIsLike(!isLike);
-    // }
+    let [likes, setLike] = useState(0);
+    
 
     const [isActive, setIsActive] = useState(true);
     const toggleIsActive = (i, prev) => {
         setIsActive(i);
-        setLike(0);
+        // setLike(likes);
         // setIsLike(!isLike);
+
+        setLike = async(names) => {
+            const send_param = {_id}
+            if(props.data.check === 0) {
+                const result = await axios.post('/detail' + _id, send_param);
+                console.log('send_param', result, send_param);
+                likes = Number(props.data.check) + 1;
+                console.log('props.data.check', props.data.check);
+                
+            }
+    
+            console.log('props.data.check', props.data.check);
+        }
     };
 
     console.log('props', props.data);
 
     const [dummyData] = useState(props.data);
     const menuListData = dummyData;
+    const _id = props.data._id;
     const hash = props.data.hash;
+    const names = props.data.username;
     const hashArr = hash.split(',');
     const titles = props.data.title;
     const numbers = props.data.menu.map((menu, index) => index + 1);
     let prices = props.data.price.map(prices => prices);
     const prdImgArr = props.data.prdImages;
+    let checks = props.data.check;
     const links = props.data.url;
+    // console.log('names', names);
+    
     // console.log('prdImgArr', prdImgArr.length );
 
     return (
@@ -102,7 +117,7 @@ export default function Detail(props) {
                                                         {isActive === index ? '투표완료' : '투표하기'}
                                                     </button>
                                                     <span className="icon_person"></span>
-                                                    <span className="person_num">{isActive === index ? like + 1 : like}</span>
+                                                    <span className="person_num">{isActive === index ? likes + 1 : likes}</span>
                                                 </div>
                                             </div>
 
@@ -132,6 +147,10 @@ export default function Detail(props) {
                         }
                     </ul>
                 </div>
+            </div>
+
+            <div className='btn-box'>
+                <HomeButton />
             </div>
         </div>
     );
