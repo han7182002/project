@@ -39,7 +39,7 @@ export default function Detail(props) {
     const hash = props.data.hash;
     const hashArr = hash.split(',');
     const titles = props.data.title;
-    const numbers = props.data.menu.map((index) => index + 1);
+    const numbers = props.data.menu.map((menu, index) => index + 1);
     let prices = props.data.price.map(prices => prices);
     const prdImgArr = props.data.prdImages;
     const links = props.data.url;
