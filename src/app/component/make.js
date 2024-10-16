@@ -4,12 +4,14 @@ import { Input } from "postcss";
 import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
+import { CldUploadWidget } from "next-cloudinary";
+
 
 export default function Make() {
+    
 
     // 이미지 저장
-    const[imgUrl, setImgUrl] = useState([]);
-    const[filenames, setFileNames] = useState([]);
+    const[filenames, setFileNames] = useState('');
 
 
     // 메뉴 추가하기
@@ -70,8 +72,40 @@ export default function Make() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const [publicId, setPublicId] = useState([]);
+    const [openArr, setopenArr] = useState([]);
+      
+    let test = [];
+    console.log(openArr);
     
+    // const imageUploader = async (files) => {
+    //     const data = new FormData();
+    //     let urls = [];
+
+    //     Array.from(files).map((file, idx) => {
+    //         urls[idx] = URL.createObjectURL(file);
+
+    //         data.append("file", file);
+    //         data.append("upload_preset", cloudPresets);
+    //     })
+        
+    //     const cloudName = process.env.CLOUD_NAME;
+    //     const cloudPresets = process.env.CLOUD_PRESETS;
+
+
+    //     const res = await fetch(`https://api.cloudinary.com/v1_1/` + cloudName +`/image/upload`, {
+    //     method: "POST",
+    //     body: data,
+    //     });
+    //     return res.json();
+    // };
+
     
+    // const fileChange = async (e) => {
+    //     const uploaded = await imageUploader(e.target.files[0]);
+    //     setImage(JSON.stringify(uploaded.url));
+    // };
 
     return (
         <div className="sec_make">
@@ -161,66 +195,61 @@ export default function Make() {
                                         <li className="list_item">
                                             <input type="text" name="url" placeholder="URL" id="adressurl" required />
                                         </li>
-                        
-                                        <div className='list_pic'>
-                                            <label className="img_label" htmlFor="imageUp"></label>
-                                            <input type="file" id="imageUp" className="img_input" multiple accept="image/*" onChange={async (e) => {
-                                                let files = e.target.files;
-                                                if (!files) {
-                                                    setImgUrl([]);
-                                                    setFileNames([]);
-                                                    return;
-                                                }
+                                    
+                                        <CldUploadWidget uploadPreset="fpczo54q"  onSuccess={(results) => {
 
-                                                if (files && !files.size > 5000000) {
-                                                    toast.error('파일 용량이 너무 큽니다.')
-                                                    return null;
-                                                }
+                                            
+                                                test.push(results.info.url);
+                                                console.log(test);
                                                 
-                                                if(imgUrl) {
-                                                    imgUrl.map(item => {
-                                                        URL.revokeObjectURL(item)
-                                                    })
-                                                }
-                                                let urls = [];
+                                                return setopenArr([...openArr, test]);
+                                                
+                                           
+                                                
+                                                // Object.entries(results).map((file, idx) => {
+                                                //     return setopenArr([...openArr, file.info.url]);
 
-                                                const formData = new FormData();
+                                                // })
 
-                                                Array.from(files).map((file, idx) => {
-                                                    urls[idx] = URL.createObjectURL(file);
-                                                    formData.append("file", file);
-                                                })
-
-                                                setImgUrl(urls);
-
-                                                // 서버전송
-                                                await fetch(`/api/post/imgUpload`, {
-                                                    method: 'POST',
-                                                    body: formData,
-                                                })
-                                                .then(res=> {
-                                                    return res.json();
-                                                })
-                                                .then(result=> {
-                                                    if(result.result) {
-                                                        console.loe('사진 저장 성공');
-                                                        setFileNames(result.data);
-                                                    }
-                                                })
-                                                .catch(error=> {
-                                                    console.log(error);
-                                                })
+                                                
+                                                
+                                                
                                             }}>
+                                            {({ open }) => (
+                                                <button className="btn btn-primary" onClick={() => {open()}}>
+                                                Upload an Image
+                                                </button>
+                                            )}
 
-                                            </input>
+{
+                                                
+                                            }
+                                        </CldUploadWidget>
+                                        {
+                                            publicId && (
+
+                                                <>
+                                                    <div className="img_wrap">
+                                                        {
+                                                            publicId.map((item,idx) => (
+                                                                <img className="list_img" src={item} alt="upload_img" width={53} height={53} key={idx}/>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+                                        {/* <div className='list_pic'>
+                                            <label className="img_label" htmlFor="imageUp"></label>
+                                            <input type="file" id="imageUp" className="img_input" multiple accept="image/*" onChange={fileChange}/>
                                             
                                             {
-                                                imgUrl && (
+                                                image && (
 
                                                     <>
                                                         <div className="img_wrap">
                                                             {
-                                                                imgUrl.map((item,idx) => (
+                                                                image.map((item,idx) => (
                                                                     <img className="list_img" src={item} alt="upload_img" width={53} height={53} key={idx}/>
                                                                 ))
                                                             }
@@ -229,16 +258,15 @@ export default function Make() {
                                                 )
                                             }
 
-                                        </div>
+                                        </div> */}
 
-                                        
+                                        <div className="info_area" style={{display: "none"}}>
+                                            <input type="text" name="check" value={openArr} required readOnly />
+                                        </div>
                                     </ul>
                                 )
                             })}
                             <button type="button" className="add_btn" onClick={nodeAdd}><img src="../../../image/make/list_add_ico.png" alt="플러스 아이콘" width={26} height={26}/></button>
-                        </div>
-                        <div className="info_area" style={{display: "none"}}>
-                            <input type="text" name="check" value={0} required readOnly />
                         </div>
                         <div className="info_area" style={{display: "none"}}>
                             <input type="text" name="username" value={userName} required readOnly />

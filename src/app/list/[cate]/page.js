@@ -7,9 +7,16 @@ export default async function ListPageServer(props) {
 
     let result = await db.collection('list').find({ category: props.params.cate }).toArray();
 
+    result = result.map((a)=>{
+        a._id = a._id.toString()
+        return a
+    })
+
+
     const resultWithStringDates = result.map(item => ({
         ...item,
         date: item.date instanceof Date ? item.date.toISOString() : item.date
+       
     }));
 
     return (

@@ -25,7 +25,7 @@ export default function ListPage({ data, props }) {
     useEffect(() => {
         // const storedUserInfo = localStorage.getItem('users');
         const storedUserInfo = users;
-
+        
         if (!storedUserInfo) {
             Router.push('/intro');
         } else {
