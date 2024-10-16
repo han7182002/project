@@ -28,6 +28,11 @@
             min-width: 120px;
             max-width: 80%;
 
+            option {
+                color: black;
+                background-color: #fff;
+            }
+
             &::after {
                 content: '';
                 display: flex;
