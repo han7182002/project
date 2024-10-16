@@ -62,7 +62,7 @@ export default function Make() {
     useEffect(() => {
         if (localStorage.getItem('nickname')) {
             const name = JSON.parse(localStorage.getItem('nickname'))
-            setUserName(name.loginName)
+            setUserName(name)
         
         } else {
             router.push('/intro')
@@ -150,7 +150,7 @@ export default function Make() {
                             <p className="info_title">메뉴등록</p>
                             {[...Array(parseInt(nodeCount))].map((n, index) => {
                                 return (
-                                    <ul className="info_list info_list_add">
+                                    <ul className="info_list info_list_add" key={index}>
                                         <li className="list_item">
                                             <label className="item_tit" htmlFor="name">{index+1}. </label>
                                             <input type="text" name="menu" placeholder="메뉴이름" id="name" required />
@@ -238,10 +238,10 @@ export default function Make() {
                             <button type="button" className="add_btn" onClick={nodeAdd}><img src="../../../image/make/list_add_ico.png" alt="플러스 아이콘" width={26} height={26}/></button>
                         </div>
                         <div className="info_area" style={{display: "none"}}>
-                            <input type="text" name="check" value={0} required />
+                            <input type="text" name="check" value={0} required readOnly />
                         </div>
                         <div className="info_area" style={{display: "none"}}>
-                            <input type="text" name="username" value={userName} required />
+                            <input type="text" name="username" value={userName} required readOnly />
                         </div>
                         {/* <div className="info_area" style={{display: "none"}}>
                             <input type="text" name="prdImages" value={['']} required />
