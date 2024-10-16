@@ -130,7 +130,7 @@ export default function Detail(props) {
                                             </ul>
 
                                             {
-                                                (Object.keys(props.data).hasOwnProperty('prdImages')) ? (
+                                                prdImgArr.length !== 0 ? (
                                                     <a href={links[index]} target="_blank" className="btn_link active" title="해당 페이지로 이동">
                                                         <span className="blind">공유하기</span>
                                                     </a>

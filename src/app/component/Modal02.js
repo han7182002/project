@@ -30,7 +30,7 @@ export default function Modal02(props) {
     <>
       {/* <button className='icon_person ' onClick={handleOpen}>버튼</button> */}
       {
-        menuListData !== undefined ? (
+        menuListData.length !== 0 ? (
           menuListData.map((image, index) =>
                 <li key={index} className="btn_photo">
                     <img key={index} onClick={handleOpen} src={image} alt="alt" />
@@ -44,14 +44,20 @@ export default function Modal02(props) {
         )
       }
 
-      <div className={`modal ${isOpen ? 'isOpen' : '' ? 'dimm' : ''}`}> 
+      <div className={`modal ${isOpen ? 'isOpen' : ''}`}> 
         {isOpen && (
           <div 
             className="inset-0 z-50 flex items-center justify-center" 
             onClick={handleClose}
           > 
+            <div className='dimm'></div>
             <div className="modal__open">
-              <ul className='modal_img_box'>
+              <div className='modal__header'>
+                <button onClick={handleClose} className="modal--close">닫기</button>
+              </div>
+
+              <div className='modal__contents'>
+                <ul className='modal_img_box'>
                   {
                     menuListData.map((image, index) =>
                       <li key={index} className="modal_img">
@@ -60,8 +66,7 @@ export default function Modal02(props) {
                     )
                   }
                 </ul>
-                
-                <button onClick={handleClose} className="modal--close mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">닫기</button>
+              </div>
             </div>
           </div>
         )}
