@@ -15,6 +15,7 @@ export default function JoinServer() {
     const [userprofileImg, setUserprofileImg] = useState(defaultImageUrl);
     const router = useRouter();
 
+    // 로컬스토리지에 저장
     useEffect(() => {
         if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
             const nickname = JSON.parse(localStorage.getItem('nickname'));
@@ -28,6 +29,7 @@ export default function JoinServer() {
         }
     }, [Router]);
 
+    // 로컬스토리지에서 삭제
     const handleLogout = (e) => {
         e.preventDefault();
         localStorage.removeItem('nickname');
@@ -35,6 +37,7 @@ export default function JoinServer() {
         router.push('/intro');
     };
 
+    // 카테고리 리스트
     const mealCategories = [
         { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트', value: '1' },
         { title: '점심', image: '/image/join/meal-item03-rice.png', alt: '밥', value: '2' },
