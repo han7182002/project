@@ -164,7 +164,7 @@ export default function ListPage({ data }) {
                                     <div className="img-box">
                                         <img src={image} alt="프로필 이미지" width={56} height={56} className="profile-image" />
                                     </div>
-                                    <span className='profile-name'>{item.userName}</span>
+                                    <span className='profile-name'>{item.username}</span>
                                 </div>
                                 <div className="mem-item__content">
                                     <div className="mem-item__wrap relative">
