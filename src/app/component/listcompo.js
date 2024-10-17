@@ -11,22 +11,25 @@ export default function ListPage({ data }) {
     const Router = useRouter();
     const pathname = usePathname();
 
-    // 기본 프로필 이미지 URL 설정
     const defaultImageUrl = '/image/intro/profile-common.png';
 
+    // 프로필 이미지 업로드
     const [image, setImage] = useState(defaultImageUrl);
     const [userInfo, setUserInfo] = useState(null);
 
-    // 사용자 이름 생성
-    let users = data.map((username, index) => data[index].username);
+    console.log("Received data:", data);
 
-    // 사용자 정보 체크
+    let users = data.map((username, index) => data[index].username);
+    console.log('users', users);
+
     useEffect(() => {
+        // const storedUserInfo = localStorage.getItem('users');
         const storedUserInfo = users;
 
         if (!storedUserInfo) {
             Router.push('/intro');
         } else {
+            // const parsedUserInfo = JSON.parse(storedUserInfo);
             const parsedUserInfo = users;
 
             setUserInfo(parsedUserInfo);
@@ -38,7 +41,6 @@ export default function ListPage({ data }) {
 
     const [dummyData] = useState(data);
 
-    // 검색어, 필터, 카테고리 상태 설정
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('전체');
     const [selectedCategory, setSelectedCategory] = useState('2'); // 기본값 '점심'
@@ -51,7 +53,6 @@ export default function ListPage({ data }) {
         }
     }, [pathname]);
 
-    // 날짜와 시간 문자열을 Date 객체로 변환
     const parseTime = (dateString, timeString) => {
         if (!dateString || !timeString) {
             return new Date();
@@ -68,26 +69,22 @@ export default function ListPage({ data }) {
         return new Date(year, month - 1, day, hours, minutes);
     };
 
-    // 현재 시간 반환
     const getCurrentTime = () => {
         return new Date();
     };
 
-    // 항목의 만료 여부
     const isExpired = (dateString, timeString) => {
         const itemDateTime = parseTime(dateString, timeString);
         const now = getCurrentTime();
         return now > itemDateTime;
     };
 
-    // 시간 포맷
     const formatTime = (timeString) => {
         const hours = timeString.substring(0, 2);
         const minutes = timeString.substring(2);
         return `${hours}:${minutes}`;
     };
 
-    // 검색어, 카테고리, 필터에 따른 데이터 필터링
     const filteredData = dummyData
         .filter(item => item.category === selectedCategory)
         .filter(item =>
@@ -104,7 +101,6 @@ export default function ListPage({ data }) {
 
     console.log("Filtered data:", filteredData);
 
-    // 카테고리 변경 처리
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
         Router.push(`/list/${category}`);

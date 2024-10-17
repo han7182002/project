@@ -73,7 +73,7 @@
                         .photo_list {
                             display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-left: 0;
 
-                            .btn_photo {display: block; width: 60px; height: 60px; @include vw-mo(font-size, 0); text-indent: -9999em;}
+                            .btn_photo {display: block; width: 60px; height: 60px; @include vw-mo(font-size, 0); overflow: hidden; text-indent: -9999em;}
                             .photo_none {
                                 display: flex; justify-content: space-between; align-items: center;
                                 span {margin-left: 5px; color: var(--MiddleGrey01); font-size: 11px;}
