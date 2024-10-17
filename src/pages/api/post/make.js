@@ -11,8 +11,9 @@ export default async function handler(req, res) {
         const db = client.db("teamproject");
 
         // 해쉬 처리
-        // req.body.hash = req.body.hash.split(',').map(value => value.trim());
-        
+        req.body.check = req.body.check.split(',').map(value => value.trim());
+         
+
         let result = await db.collection('list').insertOne(req.body) //insertOne DB에 전송
         return res.status(200).redirect('/join')
         

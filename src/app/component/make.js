@@ -25,6 +25,7 @@ export default function Make() {
         
     }
 
+
     const [selected, setSelected] = useState(0);
     const [minSelected, setMinSelected] = useState(0);
 
@@ -75,37 +76,12 @@ export default function Make() {
 
     const [publicId, setPublicId] = useState([]);
     const [openArr, setopenArr] = useState([]);
+   
       
     let test = [];
-    console.log(openArr);
     
-    // const imageUploader = async (files) => {
-    //     const data = new FormData();
-    //     let urls = [];
-
-    //     Array.from(files).map((file, idx) => {
-    //         urls[idx] = URL.createObjectURL(file);
-
-    //         data.append("file", file);
-    //         data.append("upload_preset", cloudPresets);
-    //     })
-        
-    //     const cloudName = process.env.CLOUD_NAME;
-    //     const cloudPresets = process.env.CLOUD_PRESETS;
-
-
-    //     const res = await fetch(`https://api.cloudinary.com/v1_1/` + cloudName +`/image/upload`, {
-    //     method: "POST",
-    //     body: data,
-    //     });
-    //     return res.json();
-    // };
-
+    console.log(openArr[0]);
     
-    // const fileChange = async (e) => {
-    //     const uploaded = await imageUploader(e.target.files[0]);
-    //     setImage(JSON.stringify(uploaded.url));
-    // };
 
     return (
         <div className="sec_make">
@@ -198,11 +174,14 @@ export default function Make() {
                                     
                                         <CldUploadWidget uploadPreset="fpczo54q"  onSuccess={(results) => {
 
-                                            
-                                                test.push(results.info.url);
-                                                console.log(test);
+                                                const res = results.info.url
+                                                const arr = res.split(", ");
+                                               
                                                 
-                                                return setopenArr([...openArr, test]);
+                                                test.push(arr);
+                                                
+                                                
+                                                return setopenArr([test]);
                                                 
                                            
                                                 
@@ -259,9 +238,12 @@ export default function Make() {
                                             }
 
                                         </div> */}
-
+    
                                         <div className="info_area" style={{display: "none"}}>
-                                            <input type="text" name="check" value={openArr} required readOnly />
+                                            <input type="text" name="check" value={[]} required readOnly />
+                                        </div>
+                                        <div className="info_area" style={{display: "none"}}>
+                                            <input type="text" name="prdImages" value={openArr[0]} required readOnly />
                                         </div>
                                     </ul>
                                 )
