@@ -119,10 +119,10 @@ export default function ListPage({ data }) {
                         value={selectedCategory}
                         onChange={(e) => handleCategoryChange(e.target.value)}
                     >
-                        <option value="1">아침</option>
-                        <option value="2">점심</option>
-                        <option value="3">저녁·회식</option>
-                        <option value="4">음료·디저트</option>
+                        <option value="0">아침</option>
+                        <option value="1">점심</option>
+                        <option value="2">저녁·회식</option>
+                        <option value="3">음료·디저트</option>
                     </select>
                 </div>
                 <div className="Header-list__search flex relative">
