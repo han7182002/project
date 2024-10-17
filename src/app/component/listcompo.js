@@ -174,7 +174,7 @@ export default function ListPage({ data }) {
                                     <div className="mem-item__wrap relative">
                                         <div className="mem-item__box flex justify-between">
                                             <h3 className="mem-item__title text-black">{item.title}</h3>
-                                            <p className='mem-item__prcpation text-black'>참여 <span>{item.check}</span>명</p>
+                                            <p className='mem-item__prcpation text-black'>참여 <span>{item.check.length}</span>명</p>
                                         </div>
                                         <div className="mem-item__box flex justify-between">
                                             {item.price && <p className="mem-item__price text-black">예상금액 : 1인당 {item.price[0]}원</p>}
