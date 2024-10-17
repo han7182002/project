@@ -36,7 +36,7 @@ export default function ListPage({ data }) {
         }
     }, [Router]);
 
-    const [dummyData] = useState(data);
+    const [dummyData, setDummyData] = useState(data);
 
     // 검색어, 필터, 카테고리 상태 설정
     const [searchTerm, setSearchTerm] = useState('');
@@ -46,26 +46,26 @@ export default function ListPage({ data }) {
     // URL 변경 감지 및 카테고리 동기화
     useEffect(() => {
         const category = pathname.split('/').pop();
-        if (['1', '2', '3', '4'].includes(category)) {
+        if (['0', '1', '2', '3'].includes(category)) {
             setSelectedCategory(category);
         }
     }, [pathname]);
 
     // 날짜와 시간 문자열을 Date 객체로 변환
-    const parseTime = (dateString, timeString) => {
-        if (!dateString || !timeString) {
+    const parseTime = (timeString) => {
+        if (!timeString) {
             return new Date();
         }
 
-        const [year, month, day] = dateString.split('-').map(Number);
         const hours = parseInt(timeString.substring(0, 2));
         const minutes = parseInt(timeString.substring(2));
 
-        if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes)) {
+        if (isNaN(hours) || isNaN(minutes)) {
             return new Date();
         }
 
-        return new Date(year, month - 1, day, hours, minutes);
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
     };
 
     // 현재 시간 반환
@@ -74,8 +74,8 @@ export default function ListPage({ data }) {
     };
 
     // 항목의 만료 여부
-    const isExpired = (dateString, timeString) => {
-        const itemDateTime = parseTime(dateString, timeString);
+    const isExpired = (timeString) => {
+        const itemDateTime = parseTime(timeString);
         const now = getCurrentTime();
         return now > itemDateTime;
     };
@@ -87,6 +87,19 @@ export default function ListPage({ data }) {
         return `${hours}:${minutes}`;
     };
 
+    // 실시간으로 만료 상태 업데이트
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const updatedData = dummyData.map(item => ({
+                ...item,
+                isExpired: isExpired(item.date)
+            }));
+            setDummyData(updatedData);
+        }, 100); // 1분마다 체크
+
+        return () => clearInterval(interval);
+    }, [dummyData]);
+
     // 검색어, 카테고리, 필터에 따른 데이터 필터링
     const filteredData = dummyData
         .filter(item => item.category === selectedCategory)
@@ -96,9 +109,8 @@ export default function ListPage({ data }) {
         )
         .filter(item => {
             if (selectedFilter === '전체') return true;
-            const expired = isExpired(item.createdAt, item.date);
-            if (selectedFilter === '진행중') return !expired;
-            if (selectedFilter === '종료') return expired;
+            if (selectedFilter === '진행중') return !item.isExpired;
+            if (selectedFilter === '종료') return item.isExpired;
             return true;
         });
 
@@ -162,7 +174,7 @@ export default function ListPage({ data }) {
 
                 <ul className="mem-list flex flex-col gap-2">
                     {filteredData.map((item) => (
-                        <li key={item._id} className={`mem-item relative flex items-center ${isExpired(item.createdAt, item.date) ? 'disabled' : ''}`}>
+                        <li key={item._id} className={`mem-item relative flex items-center ${item.isExpired ? 'disabled' : ''}`}>
                             <Link href={"/detail/" + item._id} style={{ width: "100%" }}>
                                 <div className="mem-item__profile flex flex-col items-center">
                                     <div className="img-box">
@@ -179,7 +191,7 @@ export default function ListPage({ data }) {
                                         <div className="mem-item__box flex justify-between">
                                             {item.price && <p className="mem-item__price text-black">예상금액 : 1인당 {item.price[0]}원</p>}
                                             <p className="mem-item__time text-black">
-                                                {isExpired(item.createdAt, item.date) ? (
+                                                {item.isExpired ? (
                                                     <span className="expired-label text-black">종료</span>
                                                 ) : (
                                                     <>마감 <span>{formatTime(item.date)}</span>까지</>
