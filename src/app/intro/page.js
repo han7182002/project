@@ -116,7 +116,7 @@ export default function Intro() {
                             className='login_img_input'
                             type='file'
                         />
-                        <span className='login_img_guide'>정방형 권장</span>
+                        <span className={`login_img_guide ${!file ? '' : 'hide'}`}>정방형 권장</span>
                         <label htmlFor='loginImgInput' className='login_img_label'></label>
                         <button className={`login_img_delete ${!file ? '' : 'show'}`} type="button" onClick={handleCancel} title="기본 이미지로 변경"></button>
                     </div>
