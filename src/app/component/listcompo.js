@@ -17,6 +17,7 @@ export default function ListPage({ data }) {
     const [image, setImage] = useState(defaultImageUrl);
     const [userInfo, setUserInfo] = useState(null);
 
+
     // 사용자 이름 생성
     let users = data.map((username, index) => data[index].username);
 
