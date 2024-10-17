@@ -39,10 +39,10 @@ export default function JoinServer() {
 
     // 카테고리 리스트
     const mealCategories = [
-        { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트', value: '1' },
-        { title: '점심', image: '/image/join/meal-item03-rice.png', alt: '밥', value: '2' },
-        { title: '저녁, 회식', image: '/image/join/meal-item04-beer.png', alt: '맥주', value: '3' },
-        { title: '커피, 음료,<br>디저트', image: '/image/join/meal-item01-greencoffee.png', alt: '커피', value: '4' },
+        { title: '아침', image: '/image/join/meal-item02-toster.png', alt: '토스트', value: '0' },
+        { title: '점심', image: '/image/join/meal-item03-rice.png', alt: '밥', value: '1' },
+        { title: '저녁, 회식', image: '/image/join/meal-item04-beer.png', alt: '맥주', value: '2' },
+        { title: '커피, 음료,<br>디저트', image: '/image/join/meal-item01-greencoffee.png', alt: '커피', value: '3' },
     ];
 
     return (
