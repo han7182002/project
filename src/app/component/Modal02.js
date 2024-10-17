@@ -51,12 +51,13 @@ export default function Modal02(props) {
             onClick={handleClose}
           > 
             <div className='dimm'></div>
-            <div className="modal__open">
+            <div className="modal__open modal__open--02">
               <div className='modal__header'>
                 <button onClick={handleClose} className="modal--close">닫기</button>
               </div>
 
-              <div className='modal__contents'>
+              <div className='modal__contents modal__contents--02'>
+                <p className='modal__contents--title'>사진 보기</p>
                 <ul className='modal_img_box'>
                   {
                     menuListData.map((image, index) =>

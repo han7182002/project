@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation.js";
 import Link from 'next/link';
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Modal02 from '../component/Modal02.js';
-import { useRouter, usePathname } from "next/navigation.js";
+import Modal03 from "../component//Modal03.js";
 import HomeButton from '../component/HomeBtn';
-import axios from "axios";
 
 export default function Detail(props) {
     const Router = useRouter();
@@ -20,29 +20,42 @@ export default function Detail(props) {
     });
 
     // 좋아요 기능 테스트
-    let [likes, setLike] = useState(0);
+    let [likes, setLike] = useState(props.data.check.map((likes, index) => likes.length));
     const [isActive, setIsActive] = useState(true);
     const toggleIsActive = (i, prev) => {
         setIsActive(i);
-        // setLike(likes);
-        // setIsLike(!isLike);
-
-        setLike = async(names) => {
-            const send_param = {_id}
-            if(props.data.check === 0) {
-                const result = await axios.post('/detail' + _id, send_param);
-                console.log('send_param', result, send_param);
-                likes = Number(props.data.check) + 1;
-                console.log('props.data.check', props.data.check);
-                
-            }
+        setLike(likes);
+        
+        // const handleLike = async (checks) => {
+        
+        //     try {
+        //         const res = await fetch(`/`, {
+        //             method: 'POST',
+        //         });
     
-            console.log('props.data.check', props.data.check);
-        }
-    };
+        //         if (res.ok) {
+        //             const num = props.data.check.map((check, index) => check[index]);
+        //             console.log('ok', props.data);
+        //             const chkArr = num.map((chk, index) => chk[index])
+        //             console.log('chkArr', chkArr);
+                    
+    
+        //             const data = await res.json();
+        //             setUpdatedPosts((prevPosts) =>
+        //                 prevPosts.map((props) =>
+        //                     props.data.check === checks ? { ...props, check: props.data.check } : props
+        //                 )
+        //             );
+        //         }
+        //     } catch (error) {
+        //         console.error('Error liking the post', error);
+        //     }
+        // };
 
-    console.log('props', props.data);
-
+        // handleLike(props.data.check);
+    }
+    // console.log('props', props.data);
+   
     // 데이터 불러오기
     const [dummyData] = useState(props.data);
     const menuListData = dummyData;
@@ -54,9 +67,13 @@ export default function Detail(props) {
     const numbers = props.data.menu.map((menu, index) => index + 1);
     let prices = props.data.price.map(prices => prices);
     const prdImgArr = props.data.prdImages;
-    let checks = props.data.check;
     const links = props.data.url;
+    const username = props.data.username;
+    const chkArr = props.data.check;
 
+    // console.log('like',likes)
+
+    // 공유하기 클립보드
     const copyToClipboard = async (text) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -72,6 +89,7 @@ export default function Detail(props) {
         console.log('textToCopy', textToCopy);
         
     };
+    // e 공유하기 클립보드
 
     return (
         <div className="wrap">
@@ -84,10 +102,6 @@ export default function Detail(props) {
                     <div className="title">
                         {titles}
                     </div>
-
-                    {/* <button className="btn_write">
-                        <span className="blind">수정하기</span>
-                    </button> */}
                 </div>
 
                 <div className="tag">
@@ -121,6 +135,7 @@ export default function Detail(props) {
 
                                                 <div className="vote_box">
                                                     <button
+                                                        key={index}
                                                         value={index}
                                                         onClick={() => {
                                                             toggleIsActive(index);
@@ -129,8 +144,13 @@ export default function Detail(props) {
                                                     >
                                                         {isActive === index ? '투표완료' : '투표하기'}
                                                     </button>
-                                                    <span className="icon_person"></span>
-                                                    <span className="person_num">{isActive === index ? likes + 1 : likes}</span>
+
+                                                    <Modal03 data={chkArr[index]} />
+
+                                                    <span className="person_num">{isActive === index ? likes[index] + 1 : likes[index]}</span>
+
+                                                    {/* <p>Likes: {likes[index]}</p> */}
+                                                    {/* <button onClick={() => {toggleIsActive(index); handleLike(item._id)}}>Like</button>     */}
                                                 </div>
                                             </div>
 
