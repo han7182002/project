@@ -13,7 +13,8 @@ export default function Intro() {
     const [profileImg, setProfileImg] = useState(defaultImageUrl);
     const [file, setFile] = useState(null);
     
-    // 페이지 들어왔을 때 저장된 닉네임, 이미지 있을 시 join으로 이동 함수
+    // 페이지 들어왔을 때, 저장된 닉네임/프로필 이미지 있을 시 join으로 이동
+    // 저장된 닉네임/프로필 이미지는 2시간 후 삭제
     useEffect(() => {
         const savedNickname = localStorage.getItem('nickname');
         const savedProfileImg = localStorage.getItem('profileImg');
@@ -27,12 +28,13 @@ export default function Intro() {
         }, 720000)
     });
     
-    // 닉네임 입력 시 값을 불러오는 함수
+    // input에 입력한 닉네임 값을 변환
     const handleNicknameChange = (e) => {
         setNickname(e.target.value);
     };
 
-    // 프로필 이미지 파일을 선택했을 때 파일 주소 변환되는 함수
+    // input file에 프로필 이미지 파일을 첨부했을 때, readAsDataURL을 통해 파일을 URL로 변환
+    // 첨부하지 않았을 때는 위 useState에 할당한 값에 따라 기본이미지(defaultImageUrl)로 변환
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
@@ -45,30 +47,27 @@ export default function Intro() {
         }
     };
 
-    // 프로필 이미지 취소 버튼을 클릭했을 때 기본이미지로 변경되는 함수
+    // 첨부한 프로필 이미지를 삭제하고 싶을 때 X 버튼을 클릭하면 기본이미지(defaultImageUrl)로 변환
     const handleCancel = () => {
         setProfileImg(defaultImageUrl);
         setFile(null);
     };
 
 
-    // 입장하기 클릭 시 호출되는 함수
+    // 입장하기 CTA 클릭 시 호출되는 함수
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // 로컬스토리지에 닉네임,이미지가 있을 때
+        // 로컬스토리지에 저장된 닉네임/프로필이미지가 있을 때
         if (localStorage.getItem('nickname') && localStorage.getItem('profileImg')) {
 
         // 없을 때
+        // 로컬스토리지에 입력한 nickname/profileImg 값이 저장됨
+        // 저장 후 join페이지로 이동
         } else {
             localStorage.setItem('nickname',  JSON.stringify(nickname) );
             localStorage.setItem('profileImg',  JSON.stringify(profileImg));
             router.push('/join');
-
-            // setTimeout(()=> {
-            //     localStorage.clear('nickname')
-            //     localStorage.clear('profileImg')
-            // }, 720000)
         }
       };
 
