@@ -15,7 +15,7 @@ export default async function handler(req, res) {
          
 
         let result = await db.collection('list').insertOne(req.body) //insertOne DB에 전송
-        return res.status(200).redirect('/join')
+        return res.status(200).redirect('/join');
         
         
     }

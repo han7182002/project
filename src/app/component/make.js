@@ -195,8 +195,8 @@ export default function Make() {
                                                 
                                             }}>
                                             {({ open }) => (
-                                                <button className="btn btn-primary" onClick={() => {open()}}>
-                                                Upload an Image
+                                                <button className="img_label" onClick={() => {open()}}>
+                                                
                                                 </button>
                                             )}
 
